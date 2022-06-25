@@ -68,6 +68,7 @@
 }
 
 #GPHOTO_INFO .albumCover {
+  display: none;
   width:48px;
   height:48px;
   border-radius:50%;
@@ -78,7 +79,7 @@
 }
 
 #GPHOTO_INFO .albumTitle {
-  color:#FDD;
+  display: none;
 }
 
 #GPHOTO_INFO .photoTime {
