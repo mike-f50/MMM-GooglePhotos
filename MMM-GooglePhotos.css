@@ -50,7 +50,7 @@
   left:0;
   right:0;
   bottom:0;
-  filter: blur(10px) sepia(80%) brightness(40%);
+  filter: blur(10px) brightness(40%);
 }
 
 #GPHOTO_INFO {
