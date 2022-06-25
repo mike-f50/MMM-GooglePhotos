@@ -152,9 +152,7 @@ Module.register("MMM-GooglePhotos", {
       albumTitle.innerHTML = album.title
       var photoTime = document.createElement("div")
       photoTime.classList.add("photoTime")
-      photoTime.innerHTML = (this.config.timeFormat == "relative")
-        ? moment(target.mediaMetadata.creationTime).fromNow()
-        : moment(target.mediaMetadata.creationTime).format(this.config.timeFormat)
+      photoTime.innerHTML = target.mediaMetadata.creationTime
       var infoText = document.createElement("div")
       infoText.classList.add("infoText")
 
