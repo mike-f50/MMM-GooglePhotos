@@ -82,6 +82,10 @@
   display: none;
 }
 
+#GPHOTO_INFO .description {
+  margin-bottom: 12px;
+}
+
 #GPHOTO_INFO .photoTime {
   color:#DFD;
 }

@@ -150,6 +150,9 @@ Module.register("MMM-GooglePhotos", {
       var albumTitle = document.createElement("div")
       albumTitle.classList.add("albumTitle")
       albumTitle.innerHTML = album.title
+      var description = document.createElement("div")
+      description.classList.add("description")
+      description.innerHTML = target.description
       var photoTime = document.createElement("div")
       photoTime.classList.add("photoTime")
       photoTime.innerHTML = target.mediaMetadata.creationTime
@@ -158,6 +161,7 @@ Module.register("MMM-GooglePhotos", {
 
       info.appendChild(albumCover)
       infoText.appendChild(albumTitle)
+      infoText.appendChild(description)
       infoText.appendChild(photoTime)
       info.appendChild(infoText)
       console.log("[GPHOTO] Image loaded:", url)
