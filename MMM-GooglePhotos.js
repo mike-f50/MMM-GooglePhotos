@@ -103,6 +103,12 @@ Module.register("MMM-GooglePhotos", {
     }
   },
 
+  formatDate: function(dateString) {
+    var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+    var date = new Date(dateString);
+    return monthNames[date.getMonth()] + " " + date.getFullYear();
+  },
+
   ready: function(url, target) {
     var hidden = document.createElement("img")
     hidden.onerror = () => {
@@ -155,7 +161,7 @@ Module.register("MMM-GooglePhotos", {
       description.innerHTML = target.description
       var photoTime = document.createElement("div")
       photoTime.classList.add("photoTime")
-      photoTime.innerHTML = target.mediaMetadata.creationTime
+      photoTime.innerHTML = this.formatDate(target.mediaMetadata.creationTime)
       var infoText = document.createElement("div")
       infoText.classList.add("infoText")
 
