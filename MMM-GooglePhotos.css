@@ -10,11 +10,6 @@
   to {opacity: 1}
 }
 
-@keyframes trans-out {
-  from {opacity: 1}
-  to {opacity: 0}
-}
-
 .region.fullscreen #GPHOTO {
   position:absolute;
   top:0;
@@ -41,13 +36,8 @@
   bottom:10px;
 }
 
-.animated {
+#GPHOTO_CURRENT.animated {
   animation-name: trans;
-  animation-duration: 2s;
-}
-
-.animated-out {
-  animation-name: trans-out;
   animation-duration: 2s;
 }
 
@@ -103,7 +93,8 @@
 #GPHOTO_INFO .infoText {
   float:right;
   margin-left: 12px;
-  padding: 6px 12px 6px 0;
+  padding-right: 12px;
+  padding-top:6px;
   font-size:18px;
   line-height:100%;
   color:#FFF;
