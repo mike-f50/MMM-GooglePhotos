@@ -40,11 +40,13 @@ Module.register("MMM-GooglePhotos", {
     if (this.config.updateInterval < 1000 * 10) this.config.updateInterval = 1000 * 10
     this.config.condition = Object.assign({}, this.defaults.condition, this.config.condition)
     this.sendSocketNotification("INIT", this.config)
+    console.log("INIT")
     this.dynamicPosition = 0
     
   },
 
   socketNotificationReceived: function(noti, payload) {
+    console.log("NOTI: " + noti)
     if (noti == "UPLOADABLE_ALBUM") {
       this.uploadableAlbum = payload
     }
@@ -116,62 +118,75 @@ Module.register("MMM-GooglePhotos", {
       this.sendSocketNotification("IMAGE_LOAD_FAIL", url)
     }
     hidden.onload = () => {
+      console.log (new Date() + " onload")
       var back = document.getElementById("GPHOTO_BACK")
       var current = document.getElementById("GPHOTO_CURRENT")
       //current.classList.remove("animated")
-      var dom = document.getElementById("GPHOTO")
-      back.style.backgroundImage = `url(${url})`
-      current.style.backgroundImage = `url(${url})`
-      current.classList.add("animated")
-      var info = document.getElementById("GPHOTO_INFO")
-      var album = this.albums.find((a)=>{
-        if (a.id == target._albumId) return true
-        return false
-      })
-      if (this.config.autoInfoPosition) {
-        var op = (album, target) => {
-          var now = new Date()
-          var q = Math.floor(now.getMinutes() / 15)
-          var r = [
-            [0,       'none',   'none',   0     ],
-            ['none',  'none',   0,        0     ],
-            ['none',  0,        0,        'none'],
-            [0,       0,        'none',   'none'],
-          ]
-          return r[q]
+      //current.classList.add("animated-out")
+      //back.classList.remove("animated")
+      //back.classList.add("animated-out")
+      var module = this
+      setTimeout(function(){
+        var dom = document.getElementById("GPHOTO")
+        back.style.backgroundImage = `url(${url})`
+        current.style.backgroundImage = `url(${url})`
+        console.log("url swap");
+        //current.classList.remove("animated-out")
+        //back.classList.remove("animated-out")
+        //current.classList.add("animated")
+        //back.classList.add("animated")
+        var info = document.getElementById("GPHOTO_INFO")
+        var album = module.albums.find((a)=>{
+          if (a.id == target._albumId) return true
+          return false
+        })
+        if (module.config.autoInfoPosition) {
+          var op = (album, target) => {
+            var now = new Date()
+            var q = Math.floor(now.getMinutes() / 15)
+            var r = [
+              [0,       'none',   'none',   0     ],
+              ['none',  'none',   0,        0     ],
+              ['none',  0,        0,        'none'],
+              [0,       0,        'none',   'none'],
+            ]
+            return r[q]
+          }
+          if (typeof module.config.autoInfoPosition == 'function') {
+            op = module.config.autoInfoPosition
+          }
+          let [top, left, bottom, right] = op(album, target)
+          info.style.setProperty('--top', top)
+          info.style.setProperty('--left', left)
+          info.style.setProperty('--bottom', bottom)
+          info.style.setProperty('--right', right)
         }
-        if (typeof this.config.autoInfoPosition == 'function') {
-          op = this.config.autoInfoPosition
-        }
-        let [top, left, bottom, right] = op(album, target)
-        info.style.setProperty('--top', top)
-        info.style.setProperty('--left', left)
-        info.style.setProperty('--bottom', bottom)
-        info.style.setProperty('--right', right)
-      }
-      info.innerHTML = ""
-      var albumCover = document.createElement("div")
-      albumCover.classList.add("albumCover")
-      albumCover.style.backgroundImage = `url(modules/MMM-GooglePhotos/cache/${album.id})`
-      var albumTitle = document.createElement("div")
-      albumTitle.classList.add("albumTitle")
-      albumTitle.innerHTML = album.title
-      var description = document.createElement("div")
-      description.classList.add("description")
-      description.innerHTML = target.description
-      var photoTime = document.createElement("div")
-      photoTime.classList.add("photoTime")
-      photoTime.innerHTML = this.formatDate(target.mediaMetadata.creationTime)
-      var infoText = document.createElement("div")
-      infoText.classList.add("infoText")
+        info.innerHTML = ""
+        var albumCover = document.createElement("div")
+        albumCover.classList.add("albumCover")
+        albumCover.style.backgroundImage = `url(modules/MMM-GooglePhotos/cache/${album.id})`
+        var albumTitle = document.createElement("div")
+        albumTitle.classList.add("albumTitle")
+        albumTitle.innerHTML = album.title
+        var description = document.createElement("div")
+        description.classList.add("description")
+        description.innerHTML = target.description
+        var photoTime = document.createElement("div")
+        photoTime.classList.add("photoTime")
+        photoTime.innerHTML = module.formatDate(target.mediaMetadata.creationTime)
+        var infoText = document.createElement("div")
+        infoText.classList.add("infoText")
 
-      info.appendChild(albumCover)
-      infoText.appendChild(albumTitle)
-      infoText.appendChild(description)
-      infoText.appendChild(photoTime)
-      info.appendChild(infoText)
-      console.log("[GPHOTO] Image loaded:", url)
-      this.sendSocketNotification("IMAGE_LOADED", url)
+        info.appendChild(albumCover)
+        infoText.appendChild(albumTitle)
+        if (target.description !== undefined) {
+          infoText.appendChild(description)
+        }
+        infoText.appendChild(photoTime)
+        info.appendChild(infoText)
+        console.log("[GPHOTO] Image loaded?:", url)
+        module.sendSocketNotification("IMAGE_LOADED", url)
+      }, 2000)
     }
     hidden.src = url
   },
@@ -188,9 +203,6 @@ Module.register("MMM-GooglePhotos", {
       if (this.config.showWidth) wrapper.style.width = this.config.showWidth + "px"
       if (this.config.showHeight) wrapper.style.height = this.config.showHeight + "px"
     }
-    current.addEventListener('animationend', ()=>{
-      current.classList.remove("animated")
-    })
     var info = document.createElement("div")
     info.id = "GPHOTO_INFO"
     info.innerHTML = "Loading..."
