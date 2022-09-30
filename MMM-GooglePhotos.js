@@ -1,5 +1,4 @@
 //
-//
 // MMM-GooglePhotos
 //
 Module.register("MMM-GooglePhotos", {
