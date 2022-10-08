@@ -25,10 +25,12 @@ Module.register("MMM-GooglePhotos", {
   },
 
   getStyles: function() {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " getStyles")
     return ["MMM-GooglePhotos.css"]
   },
 
   start: function() {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " start")
     this.uploadableAlbum = null
     this.albums = null
     this.scanned = []
@@ -44,6 +46,7 @@ Module.register("MMM-GooglePhotos", {
   },
 
   socketNotificationReceived: function(noti, payload) {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " socketNotificationReceived " + noti)
     if (noti == "UPLOADABLE_ALBUM") {
       this.uploadableAlbum = payload
     }
@@ -66,6 +69,7 @@ Module.register("MMM-GooglePhotos", {
   },
 
   notificationReceived: function(noti, payload, sender) {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " notificationReceived " + noti)
     if (noti == "GPHOTO_NEXT") {
       this.updatePhotos()
     }
@@ -78,6 +82,7 @@ Module.register("MMM-GooglePhotos", {
   },
 
   updatePhotos: function(dir=0) {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " updatePhotos")
     this.firstScan == false
     
     if (this.scanned.length == 0) {
@@ -109,9 +114,10 @@ Module.register("MMM-GooglePhotos", {
   },
 
   ready: function(url, target) {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " ready")
     var hidden = document.createElement("img")
     hidden.onerror = () => {
-      console.log("[GPHOTO] Image load fails.")
+      console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " [GPHOTO] Image load fails.")
       this.sendSocketNotification("IMAGE_LOAD_FAIL", url)
     }
     hidden.onload = () => {
@@ -162,6 +168,7 @@ Module.register("MMM-GooglePhotos", {
       infoText.appendChild(photoTime)
       info.appendChild(infoText)
       console.log("[GPHOTO] Image loaded:", url)
+      console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " [GPHOTO] Image loaded:", url)
       this.sendSocketNotification("IMAGE_LOADED", url)
     }
     hidden.src = url
@@ -169,6 +176,7 @@ Module.register("MMM-GooglePhotos", {
 
 
   getDom: function() {
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " getDom")
     var wrapper = document.createElement("div")
     wrapper.id = "GPHOTO"
     var back = document.createElement("div")
@@ -188,7 +196,7 @@ Module.register("MMM-GooglePhotos", {
     wrapper.appendChild(back)
     wrapper.appendChild(current)
     wrapper.appendChild(info)
-    console.log("updated!")
+    console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " updated!")
     return wrapper
   },
 })
