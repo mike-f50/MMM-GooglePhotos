@@ -149,12 +149,6 @@ Module.register("MMM-GooglePhotos", {
         info.style.setProperty('--right', right)
       }
       info.innerHTML = ""
-      var albumCover = document.createElement("div")
-      albumCover.classList.add("albumCover")
-      albumCover.style.backgroundImage = `url(modules/MMM-GooglePhotos/cache/${album.id})`
-      var albumTitle = document.createElement("div")
-      albumTitle.classList.add("albumTitle")
-      albumTitle.innerHTML = album.title
       var description = document.createElement("div")
       description.classList.add("description")
       description.innerHTML = target.description
@@ -164,8 +158,6 @@ Module.register("MMM-GooglePhotos", {
       var infoText = document.createElement("div")
       infoText.classList.add("infoText")
 
-      info.appendChild(albumCover)
-      infoText.appendChild(albumTitle)
       infoText.appendChild(description)
       infoText.appendChild(photoTime)
       info.appendChild(infoText)
