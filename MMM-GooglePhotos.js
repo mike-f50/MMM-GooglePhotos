@@ -155,19 +155,22 @@ Module.register("MMM-GooglePhotos", {
         info.style.setProperty('--right', right)
       }
       info.innerHTML = ""
-      var description = document.createElement("div")
-      description.classList.add("description")
-      description.innerHTML = target.description
-      var photoTime = document.createElement("div")
-      photoTime.classList.add("photoTime")
-      photoTime.innerHTML = this.formatDate(target.mediaMetadata.creationTime)
       var infoText = document.createElement("div")
       infoText.classList.add("infoText")
 
-      infoText.appendChild(description)
+      if (target.description !== undefined) {
+        var description = document.createElement("div")
+        description.classList.add("description")
+        description.innerHTML = target.description
+        infoText.appendChild(description)
+      }
+      var photoTime = document.createElement("div")
+      photoTime.classList.add("photoTime")
+      photoTime.innerHTML = this.formatDate(target.mediaMetadata.creationTime)
       infoText.appendChild(photoTime)
+
       info.appendChild(infoText)
-      console.log("[GPHOTO] Image loaded:", url)
+
       console.log("T: " + new Date().getMinutes() + ":" + new Date().getSeconds() + " [GPHOTO] Image loaded:", url)
       this.sendSocketNotification("IMAGE_LOADED", url)
     }
